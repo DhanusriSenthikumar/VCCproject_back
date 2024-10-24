@@ -7,7 +7,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Load environment variables from .env
+dotenv.config();  // Load environment variables from .env
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173', // Local development
   'http://192.168.246.179:5173', // Another local development URL
-  'https://vccproj-front.onrender.com' // Deployed frontend for VCC project
+  'https://vccproj-front.onrender.com'
 ];
 
 app.use(express.json());
@@ -27,15 +27,13 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin, like mobile apps or curl requests
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true); // Allow if origin is in the allowed list
-      } else {
+      if (allowedOrigins.indexOf(origin) === -1) {
         const msg = 'The CORS policy for this site does not allow access from the specified origin.';
-        console.error(msg); // Log the CORS error
-        return callback(new Error(msg), false); // Block if not allowed
+        return callback(new Error(msg), false);
       }
+      return callback(null, true);
     },
-    credentials: true, // Enable cookies and authorization headers across domains
+    credentials: true,
   })
 );
 
@@ -49,18 +47,10 @@ connectDB();
 app.use('/api/posts', postsRouter);
 app.use('/api/auth', authRouter);
 
-// Root route to verify server is running
 app.get('/', (req, res) => {
-  res.send('Yay!! Backend of VCC Project is now accessible');
+  res.send('Yay!! Backend of wanderlust app is now accessible');
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack); // Log the error stack
-  res.status(500).send('Something broke!'); // Send a generic error response
-});
-
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
