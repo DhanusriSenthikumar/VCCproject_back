@@ -27,11 +27,13 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin, like mobile apps or curl requests
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true); // Allow if origin is in the allowed list
+      } else {
         const msg = 'The CORS policy for this site does not allow access from the specified origin.';
-        return callback(new Error(msg), false);
+        console.error(msg); // Log the CORS error
+        return callback(new Error(msg), false); // Block if not allowed
       }
-      return callback(null, true);
     },
     credentials: true, // Enable cookies and authorization headers across domains
   })
@@ -50,6 +52,12 @@ app.use('/api/auth', authRouter);
 // Root route to verify server is running
 app.get('/', (req, res) => {
   res.send('Yay!! Backend of VCC Project is now accessible');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Log the error stack
+  res.status(500).send('Something broke!'); // Send a generic error response
 });
 
 // Start the server
