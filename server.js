@@ -7,7 +7,7 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
-dotenv.config();  // Load environment variables from .env
+dotenv.config(); // Load environment variables from .env
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173', // Local development
   'http://192.168.246.179:5173', // Another local development URL
-  'https://escape-front-2yrp.onrender.com' // Deployed frontend
+  'https://vccproj-front.onrender.com' // Deployed frontend for VCC project
 ];
 
 app.use(express.json());
@@ -33,7 +33,7 @@ app.use(
       }
       return callback(null, true);
     },
-    credentials: true,
+    credentials: true, // Enable cookies and authorization headers across domains
   })
 );
 
@@ -47,12 +47,14 @@ connectDB();
 app.use('/api/posts', postsRouter);
 app.use('/api/auth', authRouter);
 
+// Root route to verify server is running
 app.get('/', (req, res) => {
-  res.send('Yay!! Backend of wanderlust app is now accessible');
+  res.send('Yay!! Backend of VCC Project is now accessible');
 });
 
+// Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(Server is running on port ${port});
 });
 
-export default app;
+export default app;
