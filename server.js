@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173', // Local development
   'http://192.168.246.179:5173', // Another local development URL
-  'https://vccproj-front.onrender.com'
+  'https://vccproj-front.onrender.com' // Deployed frontend
 ];
 
 app.use(express.json());
@@ -48,7 +48,7 @@ app.use('/api/posts', postsRouter);
 app.use('/api/auth', authRouter);
 
 app.get('/', (req, res) => {
-  res.send('Yay!! Backend of wanderlust app is now accessible');
+  res.send('Yay!! Backend of travelbolg app is now accessible');
 });
 
 app.listen(port, () => {
